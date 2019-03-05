@@ -52,7 +52,8 @@ df['OutSizes_interaction'] = reverse_encoder.inverse_transform(df['Outlet_Size_N
 colors = {
         'Title': 'rgb(30,144,255)', 
         'Background' : '#000000', 
-        'Text' : '#FFD700'
+        'Text' : '#FFD700', 
+        'White' : '#FFFFFF'
         }
 
 
@@ -80,147 +81,156 @@ server = app.server
 
 
 app.layout =html.Div(children = [
-        html.H1('Big Mart Sales', style = {'textAlign' : 'center', 
-                                           'color' : colors['Title'],
-                                           }), 
+        html.Div([
+                
+                html.H1('Big Mart Sales', style = {'textAlign' : 'center', 
+                                           'color' : colors['Title'], 
+                                           'fontSize' : 40
+                                           }),
+                html.H1('Deploying a Random Forests Model to Predict Outlet Sales', style = {'textAlign' : 'center', 
+                                                                                                    'color' : colors['Title'], 
+                                                                                                    'fontSize': 30})]), 
+        html.Div([
 
-        html.Div([
-                html.H2(
-                        "Item MRP"
-                        ),
-                dcc.Slider(
-                        id = 'ItemMRP', 
-                        min = df['Item_MRP'].min() - 100, 
-                        max = df['Item_MRP'].max() + 100, 
-                        step = 0.1, 
-                        value = df['Item_MRP'].mean(),
-                        
-                        ),
-                html.P(id = 'MRPVal', 
-                        
-                        )
-                ], style = {'width': '30%', 'display': 'inline-block'} ),
+
+                html.Div([
+                        html.H2(
+                                "Item MRP", style = {'color': colors['White']}
+                                ),
+                                dcc.Slider(
+                                        id = 'ItemMRP', 
+                                        min = df['Item_MRP'].min() - 100, 
+                                        max = df['Item_MRP'].max() + 100, 
+                                        step = 0.1, 
+                                        value = df['Item_MRP'].mean(),
+                                        
+                                        ),
+                                        html.P(id = 'MRPVal', 
+                                               
+                                               )
+                                        ], style = {'width': '30%', 'display': 'inline-block'} ),
+                                        
         
         
-        
-        html.Div([
-                html.H2(
-                        "Outlet Type"
-                        ),
-                dcc.RadioItems(
-                        id = 'OutletType',
-                        options = OutletTypeOptions,
-                        value = 0
-                        ),
-                html.P(
-                        id = 'OutletTypeVal',
+                html.Div([
+                        html.H2(
+                                    "Outlet Type"
+                                    ),
+                                    dcc.RadioItems(
+                                            id = 'OutletType',
+                                            options = OutletTypeOptions,
+                                            value = 0
+                                            ),
+                        html.P(
+                                    id = 'OutletTypeVal',
                         
-                        )
-                ], style = {'width': '30%', 'display':'inline-block', 'paddingLeft': 20}), 
+                                )
+                        ], style = {'width': '30%', 'display':'inline-block', 'paddingLeft': 20}), 
                 
-        html.Div([
-                html.H2('Outlet Size'),
-                dcc.RadioItems(
-                        id = 'OutletSize', 
-                        options = OutletSizeOptions, 
-                        value = 0
-                        ), 
-                html.P(
-                        id = 'OutletSizeVal', 
+                html.Div([
+                        html.H2('Outlet Size'),
+                        dcc.RadioItems(
+                                id = 'OutletSize', 
+                                options = OutletSizeOptions, 
+                                value = 0
+                                ), 
+                                html.P(
+                                        id = 'OutletSizeVal', 
                         
-                        )
-                ], style = {'width' : '30%', 'display' : 'inline-block'}),
+                            )
+                            ], style = {'width' : '30%', 'display' : 'inline-block'}),
                 
                 
                 
-        html.Div([
-                html.H2("Year of Establishment"),
+                html.Div([
+                        html.H2("Year of Establishment"),
                 
-                dcc.Slider(
-                        id = 'OutletYear', 
-                        min = df['Outlet_Establishment_Year'].min(),
-                        max = df['Outlet_Establishment_Year'].max(),
-                        marks  = OutletYearOptions, 
-                        value = df['Outlet_Establishment_Year'].median()
+                        dcc.Slider(
+                                id = 'OutletYear', 
+                                min = df['Outlet_Establishment_Year'].min(),
+                                max = df['Outlet_Establishment_Year'].max(),
+                                marks  = OutletYearOptions, 
+                                value = df['Outlet_Establishment_Year'].median()
                         
-                        ),
-                        
-                html.Div([html.P(id = 'OutletYearval',
+                                ),
+                            
+                        html.Div([html.P(id = 'OutletYearval',
                        
-                       )], style = {'paddingTop': 20 })
-                ], style = {'width': '60%', 'paddingLeft': 10}),
+                                )], style = {'paddingTop': 20 })
+                        ], style = {'width': '60%', 'paddingLeft': 15}),
                 
                 
-        html.Div(html.Hr()), 
+                html.Div(html.Hr()), 
         
         
-        html.Div([
-                html.H2("Outlet Sales Prediction"),
-                html.Button(id = 'submit', n_clicks = 1, children = 'Submit Features'),
-                html.Div([dcc.Markdown(id = 'OutletSalesPred',
+                html.Div([
+                        html.H2("Outlet Sales Prediction"),
+                        html.Button(id = 'submit', n_clicks = 1, children = 'Submit Features'),
+                        html.Div([dcc.Markdown(id = 'OutletSalesPred'
+                                               
                              
                              
-                             )],style = {'backgroundColor' : '#32CD32'}),## Create a section where we see the output from the selected features
-                ],style = {'paddingBottom': 10, 'width': '30%'}), 
-                
-        html.Div([
-                html.Hr(), 
-                html.H2("Visualization of Variable Interactions"),
-                html.Div([dcc.Graph(
-                        id = 'Mrp_Type', 
-                        figure =  {'data' : [go.Scatter3d(
-                                x = df['Item_MRP'],
-                                y = df['OutTypes_interaction'],
-                                z = df['Item_Outlet_Sales'],
-                                mode= 'markers',
-                                text = df['Text'] +df['Item_Outlet_Sales'].astype('str'),
-                                marker = {
-                                        'size': 5,
-                                        'opacity' : 0.8, 
-                                        'color' : df['Item_Outlet_Sales'], 
-                                        'colorscale' : 'Jet', 
-                                            }
-                        )],
-                            'layout' : go.Layout(
-                                title = 'Outlet Sales by Mrp and Outlet Type',
-                                scene =  {  'xaxis': {
-                                                        'title' : 'Item Mrp'
-                                                        }, 
-                                            'yaxis' : {
-                                                        'title' : 'Outlet Type' 
+                                               )],style = {'backgroundColor' : '#32CD32', 'fontSize' : 20, 'paddingLeft' : 10}),## Create a section where we see the output from the selected features
+                        ],style = {'paddingBottom': 10, 'width': '25%'}), 
+                    
+                html.Div([
+                        html.Hr(), 
+                        html.H2("Visualization of Variable Interactions"),
+                        html.Div([dcc.Graph(
+                                id = 'Mrp_Type', 
+                                figure =  {'data' : [go.Scatter3d(
+                                        x = df['Item_MRP'],
+                                        y = df['OutTypes_interaction'],
+                                        z = df['Item_Outlet_Sales'],
+                                        mode= 'markers',
+                                        text = df['Text'] +df['Item_Outlet_Sales'].astype('str'),
+                                        marker = {
+                                                'size': 5,
+                                                'opacity' : 0.8, 
+                                                'color' : df['Item_Outlet_Sales'], 
+                                                'colorscale' : 'Jet', 
+                                                }
+                                        )],
+                                    'layout' : go.Layout(
+                                            title = 'Outlet Sales by Mrp and Outlet Type',
+                                            scene =  {  'xaxis': {
+                                                    'title' : 'Item Mrp'
+                                                            }, 
+                                                    'yaxis' : {
+                                                            'title' : 'Outlet Type' 
             
-                                                        }, 
-                                            'zaxis' : {
-                                                        'title' : 'Outlet Sales'
-                                                        }},
-                                height = 750, 
-                                width = 800, 
-                                margin = {
-                                        'l' : 50, 
-                                        'r' : 50, 
-                                        't' : 50, 
-                                        'b' : 50
-                                        }
-                                                    )  })],style = {'width' : '50%', 'display' : 'inline-block'} ),
+                                                            }, 
+                                                    'zaxis' : {
+                                                            'title' : 'Outlet Sales'
+                                                            }},
+                                            height = 750, 
+                                            width = 800, 
+                                            margin = {
+                                                    'l' : 50, 
+                                                    'r' : 50, 
+                                                    't' : 50, 
+                                                    'b' : 50
+                                                    }
+                                                        )  })],style = {'width' : '50%', 'display' : 'inline-block'} ),
 
 
-                html.Div(
-                        [
-                            dcc.Graph(
+                        html.Div(
+                                [
+                                dcc.Graph(
                                     id = 'Mrp_Size', 
                                     figure =  {'data' : [go.Scatter3d(
-                                                                x = df['Item_MRP'],
-                                                                y = df['OutSizes_interaction'],
-                                                                z = df['Item_Outlet_Sales'],
-                                                                mode= 'markers',
-                                                                text = df['Text'] +df['Item_Outlet_Sales'].astype('str'),
-                                                                marker = {
-                                                                            'size': 5,
-                                                                            'opacity' : 0.8, 
-                                                                            'color' : df['Item_Outlet_Sales'], 
-                                                                            'colorscale' : 'Jet', 
-                                                                            }
-                                                                )],
+                                            x = df['Item_MRP'],
+                                            y = df['OutSizes_interaction'],
+                                            z = df['Item_Outlet_Sales'],
+                                            mode= 'markers',
+                                            text = df['Text'] +df['Item_Outlet_Sales'].astype('str'),
+                                            marker = {
+                                                    'size': 5,
+                                                    'opacity' : 0.8, 
+                                                    'color' : df['Item_Outlet_Sales'], 
+                                                    'colorscale' : 'Jet', 
+                                                    }
+                                            )],
                                             'layout' : go.Layout(
                                                             title = 'Outlet Sales by Mrp and Outlet Size',
                                                             scene =  {  'xaxis': {
@@ -244,29 +254,29 @@ app.layout =html.Div(children = [
                                                                 )  })
                                 ], style = {'width' : '50%', 'display' : 'inline-block' })
 
-                ]),
+                ], style = {'paddingLeft': 15}),
 
 
 
         
-        html.Div([
-                html.Div([html.Hr()],style = {'width': '100%'}),
-                html.Div([html.H2("The Predicted Values Vs Actual Values From the Testing Data"),
-                html.Br(),
-                dcc.Graph(
-                        id = 'PredictedVsTrue', 
-                        figure = {
-                                'data' : [Prediction_Figure['data'][0],Prediction_Figure['data'][1]],
-                                'layout' : Prediction_Figure['layout']
-                                }       
-                   )],style = {'width': '50%', 'display': 'inline-block'})],style = { 'paddingTop': 50}),
+                html.Div([
+                            html.Div([html.Hr()],style = {'width': '100%'}),
+                            html.Div([html.H2("The Predicted Values Vs Actual Values From the Testing Data", style = {'color': colors['White'] }),
+                                      html.Br(),
+                                      dcc.Graph(
+                                                  id = 'PredictedVsTrue', 
+                                                  figure = {
+                                                          'data' : [Prediction_Figure['data'][0],Prediction_Figure['data'][1]],
+                                                          'layout' : Prediction_Figure['layout']
+                                                          }       
+                                                  )],style = {'width': '50%', 'display': 'inline-block'})],style = { 'paddingTop': 50, 'paddingLeft' : 15}),
                          ## Create a graph, Where you take the dataframe, predict the values, and then compare the predictions to the true values
     
 
         
         
 
-        ])
+        ], style = {'backgroundColor' : '#202020', 'color' :colors['White']})], style = {'backgroundColor': '#00994C'})
 
 
 
