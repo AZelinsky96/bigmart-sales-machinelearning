@@ -213,7 +213,7 @@ app.layout =html.Div(children = [
                                                     't' : 50, 
                                                     'b' : 50
                                                     }
-                                                        )  })],style = {'width' : '50%', 'display' : 'inline-block'} ),
+                                                        )  })],style = {'width' : '48%', 'display' : 'inline-block'} ),
 
 
                         html.Div(
@@ -254,7 +254,7 @@ app.layout =html.Div(children = [
                                                                     'b' : 50
                                                                     }
                                                                 )  })
-                                ], style = {'width' : '50%', 'display' : 'inline-block' })
+                                ], style = {'width' : '48%', 'display' : 'inline-block' })
 
                 ], style = {'paddingLeft': 15}),
 
