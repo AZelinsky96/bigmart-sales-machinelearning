@@ -205,8 +205,8 @@ app.layout =html.Div(children = [
                                                     'zaxis' : {
                                                             'title' : 'Outlet Sales'
                                                             }},
-                                            height = 600, 
-                                            width = 700, 
+                                            height = 550, 
+                                            width = 600, 
                                             margin = {
                                                     'l' : 50, 
                                                     'r' : 50, 
@@ -245,8 +245,8 @@ app.layout =html.Div(children = [
                                                                         'zaxis' : {
                                                                                 'title' : 'Outlet Sales'
                                                                                 }},
-                                                            height = 600, 
-                                                            width = 700, 
+                                                            height = 550, 
+                                                            width = 600, 
                                                             margin = {
                                                                     'l' : 50, 
                                                                     'r' : 50, 
