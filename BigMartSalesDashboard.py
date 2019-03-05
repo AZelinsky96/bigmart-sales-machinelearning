@@ -92,7 +92,7 @@ app.layout =html.Div(children = [
                                                                                                     'fontSize': 30})]), 
         html.Div([
 
-
+                ## The MRP of the theorized Item
                 html.Div([
                         html.H2(
                                 "Item MRP", style = {'color': colors['White']}
@@ -111,7 +111,7 @@ app.layout =html.Div(children = [
                                         ], style = {'width': '30%', 'display': 'inline-block'} ),
                                         
         
-        
+                ## The type of the Outlet
                 html.Div([
                         html.H2(
                                     "Outlet Type"
@@ -127,6 +127,7 @@ app.layout =html.Div(children = [
                                 )
                         ], style = {'width': '30%', 'display':'inline-block', 'paddingLeft': 20}), 
                 
+                ## The size of the Outlet
                 html.Div([
                         html.H2('Outlet Size'),
                         dcc.RadioItems(
@@ -141,7 +142,7 @@ app.layout =html.Div(children = [
                             ], style = {'width' : '30%', 'display' : 'inline-block'}),
                 
                 
-                
+                ## The year of establishment for the Outlet
                 html.Div([
                         html.H2("Year of Establishment"),
                 
@@ -162,7 +163,7 @@ app.layout =html.Div(children = [
                 
                 html.Div(html.Hr()), 
         
-        
+                ## Outputting the predictions for the input features above
                 html.Div([
                         html.H2("Outlet Sales Prediction"),
                         html.Button(id = 'submit', n_clicks = 1, children = 'Submit Features'),
@@ -172,7 +173,8 @@ app.layout =html.Div(children = [
                              
                                                )],style = {'backgroundColor' : '#32CD32', 'fontSize' : 20, 'paddingLeft' : 10}),## Create a section where we see the output from the selected features
                         ],style = {'paddingBottom': 10, 'width': '25%'}), 
-                    
+               
+                ## Visualizing the Variables    
                 html.Div([
                         html.Hr(), 
                         html.H2("Visualization of Variable Interactions"),
@@ -203,8 +205,8 @@ app.layout =html.Div(children = [
                                                     'zaxis' : {
                                                             'title' : 'Outlet Sales'
                                                             }},
-                                            height = 750, 
-                                            width = 800, 
+                                            height = 600, 
+                                            width = 700, 
                                             margin = {
                                                     'l' : 50, 
                                                     'r' : 50, 
@@ -243,8 +245,8 @@ app.layout =html.Div(children = [
                                                                         'zaxis' : {
                                                                                 'title' : 'Outlet Sales'
                                                                                 }},
-                                                            height = 750, 
-                                                            width = 800, 
+                                                            height = 600, 
+                                                            width = 700, 
                                                             margin = {
                                                                     'l' : 50, 
                                                                     'r' : 50, 
