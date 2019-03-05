@@ -84,11 +84,11 @@ app.layout =html.Div(children = [
         html.Div([
                 
                 html.H1('Big Mart Sales', style = {'textAlign' : 'center', 
-                                           'color' : colors['Title'], 
+                                           'color' : colors['White'], 
                                            'fontSize' : 40
                                            }),
                 html.H1('Deploying a Random Forests Model to Predict Outlet Sales', style = {'textAlign' : 'center', 
-                                                                                                    'color' : colors['Title'], 
+                                                                                                    'color' : colors['White'], 
                                                                                                     'fontSize': 30})]), 
         html.Div([
 
